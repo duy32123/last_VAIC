@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import argparse, json, re, statistics, sys
-from collections import Counter, defaultdict
+import argparse, json, re, statistics
+from collections import Counter
 from pathlib import Path
 from typing import Any, Iterable
 
