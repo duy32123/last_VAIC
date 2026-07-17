@@ -1,0 +1,5 @@
+data/raw/
+data/processed/btc_*
+artifacts/btc_*
+__pycache__/
+.pytest_cache/
