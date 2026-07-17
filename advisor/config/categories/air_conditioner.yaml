@@ -1,0 +1,111 @@
+{
+  "category": "air_conditioner",
+  "required_slots": [
+    "budget_max",
+    "room_area_m2",
+    "room_type",
+    "location"
+  ],
+  "optional_slots": [
+    "direct_sunlight",
+    "noise_preference",
+    "energy_preference",
+    "installment_preference",
+    "promotion_preference"
+  ],
+  "hard_constraints": {
+    "budget": {
+      "field": "price",
+      "operator": "lte",
+      "missing_policy": "exclude",
+      "rejection_reason": "over_budget_or_missing_price"
+    },
+    "suitable_capacity": {
+      "field": "specs.capacity_btu.value",
+      "operator": "capacity_for_area",
+      "missing_policy": "exclude",
+      "rejection_reason": "unsuitable_or_missing_capacity"
+    },
+    "availability": {
+      "field": "stock",
+      "operator": "in_stock_at_location",
+      "missing_policy": "exclude",
+      "rejection_reason": "unavailable_at_location"
+    }
+  },
+  "ranking_features": {
+    "noise": {
+      "path": "specs.noise_db.value",
+      "weight": 0.28,
+      "direction": "lower_is_better",
+      "normalize": "minmax",
+      "missing_policy": "penalty",
+      "missing_penalty": 0.0,
+      "min": 18,
+      "max": 50,
+      "aliases": [
+        "noise_db",
+        "do_on"
+      ],
+      "unit": "dB"
+    },
+    "energy_efficiency": {
+      "path": "specs.energy_efficiency.value",
+      "weight": 0.28,
+      "direction": "higher_is_better",
+      "normalize": "minmax",
+      "missing_policy": "penalty",
+      "missing_penalty": 0.0,
+      "min": 3,
+      "max": 7,
+      "aliases": [
+        "cspF",
+        "sao_tiet_kiem"
+      ],
+      "unit": "CSPF"
+    },
+    "price": {
+      "path": "price",
+      "weight": 0.24,
+      "direction": "lower_is_better",
+      "normalize": "minmax",
+      "missing_policy": "penalty",
+      "missing_penalty": 0.0,
+      "min": 8000000,
+      "max": 20000000,
+      "aliases": [
+        "selling_price"
+      ],
+      "unit": "VND"
+    },
+    "review_score": {
+      "path": "specs.review_score.value",
+      "weight": 0.2,
+      "direction": "higher_is_better",
+      "normalize": "minmax",
+      "missing_policy": "penalty",
+      "missing_penalty": 0.5,
+      "min": 3,
+      "max": 5,
+      "aliases": [
+        "rating"
+      ],
+      "unit": "stars"
+    }
+  },
+  "capacity_rule": {
+    "btu_per_m2_min": 500,
+    "btu_per_m2_max": 750
+  },
+  "critical_specs": [
+    "capacity_btu",
+    "noise_db",
+    "energy_efficiency"
+  ],
+  "slot_questions": {
+    "location": "Anh/chị cần kiểm tra sản phẩm tại khu vực nào?",
+    "budget_max": "Anh/chị muốn ngân sách tối đa khoảng bao nhiêu?",
+    "room_area_m2": "Diện tích phòng khoảng bao nhiêu m²?",
+    "room_type": "Anh/chị dùng cho loại phòng nào?"
+  }
+}
